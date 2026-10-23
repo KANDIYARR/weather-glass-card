@@ -8,6 +8,7 @@ class WeatherGlassCard extends HTMLElement {
       show_wind: true,
       show_forecast: false,
       animation: true,
+      size: 'medium',
     };
   }
 
@@ -38,6 +39,7 @@ class WeatherGlassCard extends HTMLElement {
       show_forecast: false,
       animation: true,
       temperature_unit: 'auto',
+      size: 'medium',
       ...config,
     };
     if (previousEntity !== this.config.entity) {
@@ -94,6 +96,38 @@ class WeatherGlassCard extends HTMLElement {
         :host{display:block;color:#f7f9ff;font-family:var(--primary-font-family,Roboto,"Helvetica Neue",Arial,sans-serif);}
         *{box-sizing:border-box}
         .card{--sky-1:#183858;--sky-2:#10233f;container-type:inline-size;position:relative;isolation:isolate;overflow:hidden;min-height:0;padding:clamp(8px,2.5cqi,16px);border:1px solid rgba(255,255,255,.2);border-radius:var(--ha-card-border-radius,24px);background:linear-gradient(155deg,var(--sky-1),var(--sky-2));box-shadow:0 12px 28px rgba(6,19,39,.2);}
+        .card[data-size="compact"]{padding:7px;border-radius:18px}
+        .card[data-size="compact"] .top{min-height:22px}
+        .card[data-size="compact"] .name{font-size:clamp(12px,3cqi,16px);gap:5px}
+        .card[data-size="compact"] .pin-icon{width:16px;height:16px}
+        .card[data-size="compact"] .day{font-size:11px;padding:4px 8px}
+        .card[data-size="compact"] .hero{min-height:clamp(64px,17cqi,92px)}
+        .card[data-size="compact"] .temperature{font-size:clamp(34px,9cqi,56px)}
+        .card[data-size="compact"] .temperature-unit{font-size:14px;padding-top:4px}
+        .card[data-size="compact"] .condition{font-size:12px;margin-top:3px}
+        .card[data-size="compact"] .weather-icon{width:clamp(38px,14cqi,72px);height:clamp(38px,14cqi,72px)}
+        .card[data-size="compact"] .details{gap:5px}
+        .card[data-size="compact"] .tile{padding:6px;border-radius:11px}
+        .card[data-size="compact"] .tile-head{font-size:10px;gap:4px}
+        .card[data-size="compact"] .tile-icon{width:12px;height:12px}
+        .card[data-size="compact"] .tile-value{font-size:16px;margin-top:3px}
+        .card[data-size="compact"] .meter{height:3px;margin-top:5px}
+        .card[data-size="large"]{padding:clamp(16px,4cqi,28px);border-radius:var(--ha-card-border-radius,30px)}
+        .card[data-size="large"] .top{min-height:38px}
+        .card[data-size="large"] .name{font-size:clamp(19px,5cqi,30px)}
+        .card[data-size="large"] .pin-icon{width:26px;height:26px}
+        .card[data-size="large"] .day{font-size:clamp(15px,3.5cqi,20px);padding:8px 16px}
+        .card[data-size="large"] .hero{min-height:clamp(150px,36cqi,230px)}
+        .card[data-size="large"] .temperature{font-size:clamp(72px,18cqi,132px)}
+        .card[data-size="large"] .temperature-unit{font-size:clamp(22px,5cqi,38px)}
+        .card[data-size="large"] .condition{font-size:clamp(19px,4cqi,30px);margin-top:12px}
+        .card[data-size="large"] .weather-icon{width:clamp(100px,30cqi,190px);height:clamp(100px,30cqi,190px)}
+        .card[data-size="large"] .details{gap:12px;margin-top:8px}
+        .card[data-size="large"] .tile{padding:clamp(14px,3cqi,24px);border-radius:24px}
+        .card[data-size="large"] .tile-head{font-size:clamp(16px,3cqi,21px)}
+        .card[data-size="large"] .tile-icon{width:22px;height:22px}
+        .card[data-size="large"] .tile-value{font-size:clamp(26px,6cqi,40px);margin-top:12px}
+        .card[data-size="large"] .meter{height:7px;margin-top:12px}
         .card[data-weather="sunny"]{--sky-1:#206b9f;--sky-2:#124777}
         .card[data-weather="partlycloudy"]{--sky-1:#4c7897;--sky-2:#203e5c}
         .card[data-weather="cloudy"]{--sky-1:#55718c;--sky-2:#263d55}
@@ -136,7 +170,7 @@ class WeatherGlassCard extends HTMLElement {
         .forecast-low{font-weight:400;color:#e3edf8;margin-left:3px}
         .message{display:none;padding:24px 18px;text-align:center;font-size:15px;font-weight:600;color:#fff}
         .card[data-message="true"] .content{display:none}.card[data-message="true"] .message{display:block}
-        @container (max-width: 390px){.card{padding:9px;border-radius:var(--ha-card-border-radius,18px)}.top{gap:5px}.hero{min-height:clamp(72px,21cqi,88px)}.temperature{font-size:clamp(38px,12cqi,48px)}.temperature-unit{font-size:14px;padding-top:3px}.condition{font-size:13px;margin-top:3px}.weather-icon{width:clamp(42px,17cqi,62px);height:clamp(42px,17cqi,62px)}.details{gap:5px}.tile{padding:6px;border-radius:11px}.tile-head{font-size:clamp(9px,2.8cqi,11px);gap:4px}.tile-icon{width:12px;height:12px}.tile-value{font-size:clamp(14px,4.8cqi,18px);margin-top:3px}.meter{margin-top:5px}.forecast{gap:2px;margin-top:7px;padding-top:6px}}
+        @container (max-width: 390px){.card{padding:9px;border-radius:var(--ha-card-border-radius,18px)}.top{gap:5px}.hero{min-height:clamp(72px,21cqi,88px)}.temperature{font-size:clamp(38px,12cqi,48px)}.temperature-unit{font-size:14px;padding-top:3px}.condition{font-size:13px;margin-top:3px}.weather-icon{width:clamp(42px,17cqi,62px);height:clamp(42px,17cqi,62px)}.details{gap:5px}.tile{padding:6px;border-radius:11px}.tile-head{font-size:clamp(9px,2.8cqi,11px);gap:4px}.tile-icon{width:12px;height:12px}.tile-value{font-size:clamp(14px,4.8cqi,18px);margin-top:3px}.meter{margin-top:5px}.forecast{gap:2px;margin-top:7px;padding-top:6px}.card[data-size="large"] .hero{min-height:clamp(110px,32cqi,140px)}.card[data-size="large"] .temperature{font-size:clamp(54px,16cqi,78px)}.card[data-size="large"] .weather-icon{width:clamp(70px,25cqi,100px);height:clamp(70px,25cqi,100px)}}
         @container (max-width: 300px){.card{padding:7px}.hero{min-height:64px}.temperature{font-size:34px}.weather-icon{width:36px;height:36px}.details{gap:4px}.tile{padding:5px}.tile-head{font-size:8px}.tile-icon{width:10px;height:10px}.tile-value{font-size:13px}.meter{height:3px;margin-top:4px}.day{padding:4px 7px;font-size:10px}}
         @media(prefers-reduced-motion:reduce){.meter-fill{transition:none}}
       </style>
@@ -175,6 +209,7 @@ class WeatherGlassCard extends HTMLElement {
     this._el.card.dataset.message = 'false';
     const attributes = entity.attributes || {};
     const condition = String(entity.state || 'unknown').toLowerCase();
+    this._el.card.dataset.size = ['compact','medium','large'].includes(this.config.size) ? this.config.size : 'medium';
     const locale = this._hass.locale?.language || this._hass.language || undefined;
     this._el.card.dataset.weather = condition;
     this._el.name.textContent = this.config.name || attributes.friendly_name || this.config.entity.replace(/^weather\./, '').replaceAll('_',' ');
@@ -396,7 +431,7 @@ class WeatherGlassCard extends HTMLElement {
 
   _paintRain(ctx, w, h, t, fixed) {
     const storm = this._el.card.dataset.weather.includes('lightning');
-    const count = Math.round((storm ? 88 : this._el.card.dataset.weather === 'pouring' ? 66 : 42) * Math.min(1, w / 360));
+    const count = Math.max(8, Math.round((storm ? 88 : this._el.card.dataset.weather === 'pouring' ? 66 : 42) * Math.min(1, w / 360) * this._effectScale()));
     ctx.strokeStyle = storm ? 'rgba(213,226,255,.38)' : 'rgba(198,232,255,.46)';
     ctx.lineWidth = 1.6;
     ctx.lineCap = 'round';
@@ -418,7 +453,7 @@ class WeatherGlassCard extends HTMLElement {
   }
 
   _paintSnow(ctx, w, h, t, fixed) {
-    const count = Math.min(34, Math.max(8, Math.floor(w / 18)));
+    const count = Math.max(6, Math.round(Math.min(34, Math.max(8, Math.floor(w / 18))) * this._effectScale()));
     for (let i=0;i<count;i++) {
       const baseX = (i * 67.31) % w;
       const y = fixed ? (i * 43.3) % h : (i * 43.3 + t * (13 + i % 7)) % h;
@@ -433,7 +468,7 @@ class WeatherGlassCard extends HTMLElement {
   }
 
   _paintClouds(ctx, w, h, t, fixed) {
-    const count = Math.max(2, Math.min(5, Math.round(w / 90)));
+    const count = Math.max(1, Math.round(Math.max(2, Math.min(5, Math.round(w / 90))) * this._effectScale()));
     for (let i=0;i<count;i++) {
       const x = fixed ? (i * w / 4) : ((i * w / 4 + t * (5 + i * 1.8)) % (w + 180)) - 90;
       const y = h * (.15 + (i % 3) * .18);
@@ -447,24 +482,25 @@ class WeatherGlassCard extends HTMLElement {
     const x=w*.78,y=h*.24,r=Math.min(w,h)*.17;
     const glow=ctx.createRadialGradient(x,y,r*.18,x,y,r*2.8); glow.addColorStop(0,'rgba(255,219,131,.32)'); glow.addColorStop(1,'rgba(255,214,117,0)'); ctx.fillStyle=glow; ctx.fillRect(0,0,w,h);
     ctx.save();ctx.translate(x,y);ctx.rotate(fixed?0:t*.035);ctx.strokeStyle='rgba(255,229,168,.12)';ctx.lineWidth=18;ctx.lineCap='round';
-    const rays = Math.max(6, Math.min(12, Math.round(w / 32)));
+    const rays = Math.max(4, Math.round(Math.max(6, Math.min(12, Math.round(w / 32))) * this._effectScale()));
     for(let i=0;i<rays;i++){const a=i*Math.PI*2/rays;ctx.beginPath();ctx.moveTo(Math.cos(a)*r*1.25,Math.sin(a)*r*1.25);ctx.lineTo(Math.cos(a)*r*2.1,Math.sin(a)*r*2.1);ctx.stroke();}ctx.restore();
   }
 
   _paintNight(ctx, w, h, t, fixed) {
-    const stars = Math.max(10, Math.round(w / 9));
+    const stars = Math.max(6, Math.round(Math.max(10, Math.round(w / 9)) * this._effectScale()));
     for(let i=0;i<stars;i++){const x=(i*79.7+13)%w,y=(i*47.9+9)%(h*.78);const twinkle=fixed ? .8 : .45+.4*(.5+.5*Math.sin(t*1.2+i));ctx.fillStyle=`rgba(255,255,255,${twinkle})`;ctx.beginPath();ctx.arc(x,y,1+(i%3)*.55,0,Math.PI*2);ctx.fill();}
     const x=w*.78,y=h*.2,r=Math.min(w,h)*.105;ctx.fillStyle='rgba(255,237,186,.87)';ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.fill();ctx.fillStyle='rgba(30,37,77,.92)';ctx.beginPath();ctx.arc(x+r*.48,y-r*.24,r*.9,0,Math.PI*2);ctx.fill();
   }
 
-  _paintFog(ctx,w,h,t,fixed){for(let i=0;i<6;i++){const x=fixed?w*.5:((t*8+i*150)%(w+260))-130,y=h*(.3+i*.105);ctx.fillStyle=`rgba(236,246,255,${.055+(i%2)*.025})`;ctx.beginPath();ctx.ellipse(x,y,w*.42,12+i%3*5,0,0,Math.PI*2);ctx.fill();}}
-  _paintWind(ctx,w,h,t,fixed){ctx.strokeStyle='rgba(227,247,255,.23)';ctx.lineWidth=2;ctx.lineCap='round';for(let i=0;i<15;i++){const y=(i*51+20)%h;const x=fixed?i*w/15:((i*79-t*(20+i%4*6))%(w+100)+w+100)%(w+100)-40;const len=18+(i%5)*12;ctx.beginPath();ctx.moveTo(x,y);ctx.quadraticCurveTo(x+len*.4,y-5,x+len,y);ctx.stroke();}}
-  _paintHail(ctx,w,h,t,fixed){for(let i=0;i<32;i++){const x=(i*61.7)%w,y=fixed?(i*43)%h:(i*43+t*58)%h;ctx.fillStyle='rgba(237,249,255,.52)';ctx.beginPath();ctx.arc(x,y,1.6+(i%3)*.55,0,Math.PI*2);ctx.fill();}}
+  _effectScale(){return this._el.card.dataset.size==='compact' ? 0.55 : this._el.card.dataset.size==='large' ? 1 : 0.8;}
+  _paintFog(ctx,w,h,t,fixed){const count=Math.max(2,Math.round(6*this._effectScale()));for(let i=0;i<count;i++){const x=fixed?w*.5:((t*8+i*150)%(w+260))-130,y=h*(.3+i*.105);ctx.fillStyle=`rgba(236,246,255,${.055+(i%2)*.025})`;ctx.beginPath();ctx.ellipse(x,y,w*.42,12+i%3*5,0,0,Math.PI*2);ctx.fill();}}
+  _paintWind(ctx,w,h,t,fixed){ctx.strokeStyle='rgba(227,247,255,.23)';ctx.lineWidth=2;ctx.lineCap='round';const count=Math.max(4,Math.round(15*this._effectScale()));for(let i=0;i<count;i++){const y=(i*51+20)%h;const x=fixed?i*w/count:((i*79-t*(20+i%4*6))%(w+100)+w+100)%(w+100)-40;const len=18+(i%5)*12;ctx.beginPath();ctx.moveTo(x,y);ctx.quadraticCurveTo(x+len*.4,y-5,x+len,y);ctx.stroke();}}
+  _paintHail(ctx,w,h,t,fixed){const count=Math.max(8,Math.round(32*this._effectScale()));for(let i=0;i<count;i++){const x=(i*61.7)%w,y=fixed?(i*43)%h:(i*43+t*58)%h;ctx.fillStyle='rgba(237,249,255,.52)';ctx.beginPath();ctx.arc(x,y,1.6+(i%3)*.55,0,Math.PI*2);ctx.fill();}}
   _escape(value){return String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
 }
 
 class WeatherGlassCardEditor extends HTMLElement {
-  setConfig(config) { this._config = { show_humidity:true, show_wind:true, show_forecast:false, animation:true, temperature_unit:'auto', ...config }; this._render(); }
+  setConfig(config) { this._config = { show_humidity:true, show_wind:true, show_forecast:false, animation:true, temperature_unit:'auto', size:'medium', ...config }; this._render(); }
   set hass(hass) { this._hass = hass; this._render(); }
   _render() {
     if (!this._config) return;
@@ -474,12 +510,14 @@ class WeatherGlassCardEditor extends HTMLElement {
       <label>Weather entity<select data-key="entity"><option value="">Select a weather entity</option>${entityOptions}</select></label>
       <label>Location name (optional)<input data-key="name" value="${this._escape(this._config.name||'')}" placeholder="Use entity name"></label>
       <label>Temperature unit<select data-key="temperature_unit"><option value="auto">Entity unit</option><option value="°C">Celsius</option><option value="°F">Fahrenheit</option></select></label>
+      <label>Card size<select data-key="size"><option value="compact">Compact</option><option value="medium">Medium</option><option value="large">Large</option></select></label>
       <label class="check"><input data-key="show_humidity" type="checkbox" ${this._config.show_humidity?'checked':''}> Show humidity</label>
       <label class="check"><input data-key="show_wind" type="checkbox" ${this._config.show_wind?'checked':''}> Show wind</label>
       <label class="check"><input data-key="show_forecast" type="checkbox" ${this._config.show_forecast?'checked':''}> Show five-day forecast</label>
       <label class="check"><input data-key="animation" type="checkbox" ${this._config.animation?'checked':''}> Animate background</label></div>
       <style>.editor{display:grid;gap:12px;padding:12px 0}.editor label{display:grid;gap:5px}.editor input:not([type=checkbox]),.editor select{font:inherit;padding:8px;border:1px solid var(--divider-color,#888);border-radius:8px;background:var(--card-background-color,#fff);color:var(--primary-text-color,#111)}.editor .check{display:flex;align-items:center;gap:8px}</style>`;
     const unit = this.querySelector('[data-key="temperature_unit"]'); if(unit) unit.value=this._config.temperature_unit||'auto';
+    const size = this.querySelector('[data-key="size"]'); if(size) size.value=this._config.size||'medium';
     this.querySelectorAll('[data-key]').forEach(input=>input.addEventListener('change',()=>{
       const key=input.dataset.key; this._config[key]=input.type==='checkbox'?input.checked:input.value;
       this.dispatchEvent(new CustomEvent('config-changed',{detail:{config:{...this._config}},bubbles:true,composed:true}));

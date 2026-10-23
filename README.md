@@ -36,6 +36,7 @@ show_wind: true
 show_forecast: false
 animation: true
 temperature_unit: auto
+size: compact # compact, medium, or large
 ```
 
 `temperature_unit: auto` uses the entity's temperature unit. Set it to `°C` or `°F` to override the display unit.
@@ -51,6 +52,7 @@ The `name` is a per-card label, so separate cards can display different location
 | `show_forecast` | `false` | Request and show a compact five-day forecast |
 | `animation` | `true` | Animate the weather background; animation pauses off-screen and respects reduced-motion preferences |
 | `temperature_unit` | `auto` | Use the entity's unit (`auto`) or select `°C` or `°F` |
+| `size` | `medium` | Card layout: `compact`, `medium`, or `large`; each size scales with the dashboard column width |
 
 ## Preview weather conditions
 
