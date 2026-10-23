@@ -2,6 +2,8 @@
 
 A polished, animated weather card for Home Assistant dashboards. Weather Glass Card displays current conditions and a multi-day forecast from a Home Assistant `weather` entity, with configurable units, location label, and display options.
 
+**Author:** Vinoth Sakthivel · [vinoth@kandiyar.com](mailto:vinoth@kandiyar.com)
+
 ## Features
 
 - Animated weather illustration with reduced-motion support
