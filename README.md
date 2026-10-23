@@ -1,34 +1,33 @@
 # Weather Glass Card
 
-A polished, animated weather card for Home Assistant dashboards. Weather Glass Card displays current conditions and a multi-day forecast from a Home Assistant `weather` entity, with configurable units, location label, and display options.
+An animated weather card for Home Assistant dashboards. Weather Glass Card displays current conditions and a multi-day forecast from an existing Home Assistant weather entity, with controls for temperature units, labels, animation, and forecast details.
 
 **Author:** Vinoth Sakthivel · [vinoth@kandiyar.com](mailto:vinoth@kandiyar.com)
 
-## Features
+## Highlights
 
-- Animated weather illustration with reduced-motion support
-- Celsius, Fahrenheit, or Home Assistant default units
-- Configurable location label and forecast length
-- Optional humidity, wind, and feels-like details when provided by the weather integration
-- Visual editor and YAML configuration
-- No API key or external weather service required
-- HACS installation and updates
+- Animated weather artwork that respects reduced-motion preferences
+- Celsius, Fahrenheit, or Home Assistant's configured temperature unit
+- Optional forecast and current-condition details, when provided by the weather integration
+- Visual card editor and YAML configuration
+- No API key or additional weather service required
+- HACS installation and update support
 
 ## Installation
 
-### Install with HACS
+### Install through HACS
 
 1. In Home Assistant, open **HACS** and select the menu in the upper-right corner.
 2. Choose **Custom repositories**.
-3. Enter `https://github.com/KANDIYARR/weather-glass-card` and select **Dashboard** as the category.
-4. Select **Add**, find **Weather Glass Card** in HACS, and choose **Download**.
-5. Refresh the Home Assistant dashboard, then add **Weather Glass Card** using the card picker.
+3. Add `https://github.com/KANDIYARR/weather-glass-card` and select **Dashboard** as the category.
+4. Select **Add**, open the card in HACS, and choose **Download**.
+5. Refresh your dashboard and add **Weather Glass Card** using the card picker.
 
-HACS installs the JavaScript file and registers the dashboard resource. You do not need to copy files or add the resource manually. The repository must be public on GitHub.
+HACS downloads the card and registers its dashboard resource. Manual file copying and resource configuration are not required. The GitHub repository must be public.
 
 ## Configuration
 
-Use the visual editor to select a weather entity and configure the card. To configure it in YAML, use:
+Select a weather entity in the visual editor, or configure the card with YAML:
 
 ```yaml
 type: custom:weather-glass-card
@@ -40,23 +39,29 @@ forecast_days: 4
 animated: true
 ```
 
-Replace `weather.forecast_home` with a weather entity in your Home Assistant instance.
+Replace `weather.forecast_home` with a weather entity available in your Home Assistant instance.
 
 | Option | Type | Default | Description |
 | --- | --- | --- | --- |
-| `entity` | string | Required | Weather entity used for current conditions and forecast |
-| `location` | string | `Home` | Label displayed at the top of the card |
+| `entity` | string | Required | Weather entity that provides current conditions and forecast data |
+| `location` | string | `Home` | Display label shown on the card |
 | `unit` | string | `auto` | Temperature unit: `auto`, `C`, or `F` |
-| `show_forecast` | boolean | `true` | Show forecast when the entity provides it |
-| `forecast_days` | number | `4` | Forecast days to display, from 1 to 7 |
-| `animated` | boolean | `true` | Animate the weather illustration |
+| `show_forecast` | boolean | `true` | Show the forecast when the entity provides it |
+| `forecast_days` | number | `4` | Number of forecast days to display (1–7) |
+| `animated` | boolean | `true` | Enable animation for the weather artwork |
 
-## Data and units
+## Weather data and units
 
-The selected entity determines the actual weather location and available data. The `location` option changes only the card's display label. Forecast, humidity, wind, and apparent temperature are shown when the entity's integration provides them.
+The selected weather entity determines the actual location and the data available to the card. The `location` option changes only the displayed label. Forecast, humidity, wind, and apparent temperature appear when provided by the entity's integration.
 
-With `unit: auto`, temperatures follow Home Assistant's configured unit system. The card supports reduced-motion preferences by disabling its animations when requested by the operating system or browser.
+With `unit: auto`, temperatures follow Home Assistant's configured unit system. When reduced motion is enabled in the operating system or browser, the card's animations are disabled.
+
+## Troubleshooting
+
+- **HACS reports that `manifest.json` is missing:** add the repository as a **Dashboard** custom repository. This project is a Lovelace card, not a Home Assistant integration.
+- **The forecast is empty:** confirm that the selected weather integration exposes forecast data for its weather entity.
+- **The card does not appear after installation:** refresh the browser and confirm that the selected entity exists in Home Assistant.
 
 ## Support
 
-If you encounter a problem, include your Home Assistant version, the weather entity's integration, and the relevant browser console error when opening an issue.
+When reporting an issue, include your Home Assistant version, the weather integration and entity used, and any relevant browser-console errors.
