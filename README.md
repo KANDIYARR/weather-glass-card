@@ -12,9 +12,10 @@ Add Weather Glass Card to HACS as a **Dashboard** repository. This is a Lovelace
 2. Choose **Custom repositories**.
 3. Enter [`https://github.com/KANDIYARR/weather-glass-card`](https://github.com/KANDIYARR/weather-glass-card), select **Dashboard** as the category, then select **Add**.
 4. Find **Weather Glass Card** in HACS and download it.
-5. Refresh Home Assistant, then add **Weather Glass Card** to a dashboard and choose a `weather.*` entity.
+5. Open **Settings → Dashboards → ⋮ → Resources** and add `/hacsfiles/weather-glass-card/weather-glass-card.js` as a **JavaScript module**. If you already added `/local/weather-glass-card.js`, remove or disable that old resource to avoid loading the stale copy.
+6. Save, hard-refresh Home Assistant, then add **Weather Glass Card** to a dashboard and choose a `weather.*` entity.
 
-HACS installs the card and manages its dashboard resource. There is no need to copy the JavaScript file or add a resource manually.
+HACS downloads and updates the card files. Add the HACS resource once; you do not need to copy the JavaScript file yourself.
 
 ### Manual installation
 
