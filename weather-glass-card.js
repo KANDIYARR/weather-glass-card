@@ -478,13 +478,16 @@ class WeatherGlassCard extends HTMLElement {
   _paintSnow(ctx, w, h, t, fixed) {
     const count = Math.max(6, Math.round(Math.min(34, Math.max(8, Math.floor(w / 18))) * this._effectScale()));
     for (let i=0;i<count;i++) {
-      const baseX = (i * 67.31) % w;
-      const y = fixed ? (i * 43.3) % h : (i * 43.3 + t * (13 + i % 7)) % h;
-      const drift = fixed ? 0 : Math.sin(t * .55 + i) * 13 + t * ((i % 3) - 1) * 2;
-      const x = ((baseX + drift) % w + w) % w;
-      const radius = 2.1 + (i % 3) * .65;
-      ctx.save(); ctx.translate(x,y); ctx.rotate(fixed ? 0 : Math.sin(t*.2+i)*.25);
-      ctx.strokeStyle = `rgba(255,255,255,${.44 + (i % 4) * .1})`; ctx.lineWidth = 1.1; ctx.lineCap = 'round';
+      const depth = (Math.sin(i * 91.7 + 4.2) + 1) / 2;
+      const speed = 12 + depth * 24;
+      const phase = ((i * 67.31) % w) / w;
+      const fall = fixed ? phase * h : ((phase * h + t * speed) % h);
+      const sway = fixed ? 0 : Math.sin(t * (0.45 + depth * 0.4) + i * 2.1) * (5 + depth * 12);
+      const x = ((phase * w + sway + w) % w);
+      const y = fall;
+      const radius = 1.4 + depth * 2.1;
+      ctx.save(); ctx.translate(x,y); ctx.rotate(fixed ? 0 : Math.sin(t * .35 + i * 1.7) * .5);
+      ctx.strokeStyle = `rgba(255,255,255,${.28 + depth * .48})`; ctx.lineWidth = .7 + depth * .7; ctx.lineCap = 'round';
       for(let arm=0;arm<3;arm++){const a=arm*Math.PI/3;const dx=Math.cos(a)*radius,dy=Math.sin(a)*radius;ctx.beginPath();ctx.moveTo(-dx,-dy);ctx.lineTo(dx,dy);ctx.stroke();}
       ctx.restore();
     }
@@ -493,32 +496,37 @@ class WeatherGlassCard extends HTMLElement {
   _paintClouds(ctx, w, h, t, fixed) {
     const count = Math.max(1, Math.round(Math.max(2, Math.min(5, Math.round(w / 90))) * this._effectScale()));
     for (let i=0;i<count;i++) {
-      const x = fixed ? (i * w / 4) : ((i * w / 4 + t * (5 + i * 1.8)) % (w + 180)) - 90;
-      const y = h * (.15 + (i % 3) * .18);
-      ctx.fillStyle = `rgba(225,240,255,${.035 + (i % 2) * .018})`;
-      ctx.beginPath(); ctx.ellipse(x,y,w*.21,h*.075,0,0,Math.PI*2); ctx.fill();
-      ctx.beginPath(); ctx.ellipse(x+w*.08,y+8,w*.12,h*.06,0,0,Math.PI*2); ctx.fill();
+      const seed = i + 1;
+      const speed = 3 + ((Math.sin(seed * 12.7) + 1) * 2.5);
+      const cloudWidth = w * (.16 + (i % 3) * .035);
+      const x = fixed ? i * w / Math.max(1, count) : ((i * w / Math.max(1, count) + t * speed) % (w + cloudWidth * 2)) - cloudWidth;
+      const y = h * (.14 + (i % 3) * .19) + (fixed ? 0 : Math.sin(t * .12 + seed) * 3);
+      const breathe = fixed ? 1 : .9 + .1 * Math.sin(t * .16 + seed);
+      ctx.fillStyle = `rgba(225,240,255,${(.028 + (i % 2) * .014) * breathe})`;
+      ctx.beginPath(); ctx.ellipse(x,y,cloudWidth,h*.065,0,0,Math.PI*2); ctx.fill();
+      ctx.beginPath(); ctx.ellipse(x+cloudWidth*.32,y+5,cloudWidth*.58,h*.052,0,0,Math.PI*2); ctx.fill();
     }
   }
 
   _paintSun(ctx, w, h, t, fixed) {
     const x=w*.78,y=h*.24,r=Math.min(w,h)*.17;
-    const glow=ctx.createRadialGradient(x,y,r*.18,x,y,r*2.8); glow.addColorStop(0,'rgba(255,219,131,.32)'); glow.addColorStop(1,'rgba(255,214,117,0)'); ctx.fillStyle=glow; ctx.fillRect(0,0,w,h);
-    ctx.save();ctx.translate(x,y);ctx.rotate(fixed?0:t*.035);ctx.strokeStyle='rgba(255,229,168,.12)';ctx.lineWidth=18;ctx.lineCap='round';
+    const pulse = fixed ? 1 : .92 + .08 * Math.sin(t * .35);
+    const glow=ctx.createRadialGradient(x,y,r*.18,x,y,r*2.8*pulse); glow.addColorStop(0,`rgba(255,219,131,${.24 + .08 * pulse})`); glow.addColorStop(1,'rgba(255,214,117,0)'); ctx.fillStyle=glow; ctx.fillRect(0,0,w,h);
+    ctx.save();ctx.translate(x,y);ctx.rotate(fixed?0:t*.025);ctx.strokeStyle='rgba(255,229,168,.11)';ctx.lineWidth=Math.max(5,Math.min(18,r*.22));ctx.lineCap='round';
     const rays = Math.max(4, Math.round(Math.max(6, Math.min(12, Math.round(w / 32))) * this._effectScale()));
     for(let i=0;i<rays;i++){const a=i*Math.PI*2/rays;ctx.beginPath();ctx.moveTo(Math.cos(a)*r*1.25,Math.sin(a)*r*1.25);ctx.lineTo(Math.cos(a)*r*2.1,Math.sin(a)*r*2.1);ctx.stroke();}ctx.restore();
   }
 
   _paintNight(ctx, w, h, t, fixed) {
     const stars = Math.max(6, Math.round(Math.max(10, Math.round(w / 9)) * this._effectScale()));
-    for(let i=0;i<stars;i++){const x=(i*79.7+13)%w,y=(i*47.9+9)%(h*.78);const twinkle=fixed ? .8 : .45+.4*(.5+.5*Math.sin(t*1.2+i));ctx.fillStyle=`rgba(255,255,255,${twinkle})`;ctx.beginPath();ctx.arc(x,y,1+(i%3)*.55,0,Math.PI*2);ctx.fill();}
-    const x=w*.78,y=h*.2,r=Math.min(w,h)*.105;ctx.fillStyle='rgba(255,237,186,.87)';ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.fill();ctx.fillStyle='rgba(30,37,77,.92)';ctx.beginPath();ctx.arc(x+r*.48,y-r*.24,r*.9,0,Math.PI*2);ctx.fill();
+    for(let i=0;i<stars;i++){const drift=fixed?0:Math.sin(t*.08+i)*1.4;const x=((i*79.7+13+drift)%w+w)%w,y=(i*47.9+9)%(h*.78);const twinkle=fixed ? .7 : .28+.62*(.5+.5*Math.sin(t*(.7+(i%5)*.18)+i*2.3));ctx.fillStyle=`rgba(255,255,255,${twinkle})`;ctx.beginPath();ctx.arc(x,y,.7+(i%3)*.55,0,Math.PI*2);ctx.fill();}
+    const x=w*.78,y=h*.2,r=Math.min(w,h)*.105;const glow=ctx.createRadialGradient(x,y,r*.4,x,y,r*2.8);glow.addColorStop(0,'rgba(255,237,186,.1)');glow.addColorStop(1,'rgba(255,237,186,0)');ctx.fillStyle=glow;ctx.fillRect(0,0,w,h);ctx.fillStyle='rgba(255,237,186,.87)';ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.fill();ctx.fillStyle='rgba(30,37,77,.92)';ctx.beginPath();ctx.arc(x+r*.48,y-r*.24,r*.9,0,Math.PI*2);ctx.fill();
   }
 
   _effectScale(){return this._el.card.dataset.size==='compact' ? 0.55 : this._el.card.dataset.size==='large' ? 1 : 0.8;}
-  _paintFog(ctx,w,h,t,fixed){const count=Math.max(2,Math.round(6*this._effectScale()));for(let i=0;i<count;i++){const x=fixed?w*.5:((t*8+i*150)%(w+260))-130,y=h*(.3+i*.105);ctx.fillStyle=`rgba(236,246,255,${.055+(i%2)*.025})`;ctx.beginPath();ctx.ellipse(x,y,w*.42,12+i%3*5,0,0,Math.PI*2);ctx.fill();}}
-  _paintWind(ctx,w,h,t,fixed){ctx.strokeStyle='rgba(227,247,255,.23)';ctx.lineWidth=2;ctx.lineCap='round';const count=Math.max(4,Math.round(15*this._effectScale()));for(let i=0;i<count;i++){const y=(i*51+20)%h;const x=fixed?i*w/count:((i*79-t*(20+i%4*6))%(w+100)+w+100)%(w+100)-40;const len=18+(i%5)*12;ctx.beginPath();ctx.moveTo(x,y);ctx.quadraticCurveTo(x+len*.4,y-5,x+len,y);ctx.stroke();}}
-  _paintHail(ctx,w,h,t,fixed){const count=Math.max(8,Math.round(32*this._effectScale()));for(let i=0;i<count;i++){const x=(i*61.7)%w,y=fixed?(i*43)%h:(i*43+t*58)%h;ctx.fillStyle='rgba(237,249,255,.52)';ctx.beginPath();ctx.arc(x,y,1.6+(i%3)*.55,0,Math.PI*2);ctx.fill();}}
+  _paintFog(ctx,w,h,t,fixed){const count=Math.max(2,Math.round(6*this._effectScale()));for(let i=0;i<count;i++){const speed=3+(i%3)*2;const x=fixed?w*.5:((t*speed+i*150)%(w+260))-130;const y=h*(.3+i*.105)+(fixed?0:Math.sin(t*.18+i)*4);const breathe=fixed?1:.85+.15*Math.sin(t*.22+i);ctx.fillStyle=`rgba(236,246,255,${(.045+(i%2)*.022)*breathe})`;ctx.beginPath();ctx.ellipse(x,y,w*(.3+(i%2)*.08),8+i%3*4,0,0,Math.PI*2);ctx.fill();}}
+  _paintWind(ctx,w,h,t,fixed){const count=Math.max(4,Math.round(15*this._effectScale()));ctx.lineCap='round';for(let i=0;i<count;i++){const phase=i*1.71;const y=(i*51+20)%h+(fixed?0:Math.sin(t*.6+phase)*4);const progress=fixed?0:(t*(16+i%4*8)+i*79)%(w+120);const x=fixed?i*w/count:progress-60;const len=(18+(i%5)*12)*(fixed?1:.72+.28*Math.sin(t*1.1+phase));ctx.strokeStyle=`rgba(227,247,255,${.11+.12*(.5+.5*Math.sin(t*.9+phase))})`;ctx.lineWidth=1+(i%3)*.45;ctx.beginPath();ctx.moveTo(x,y);ctx.bezierCurveTo(x+len*.25,y-7,x+len*.7,y+7,x+len,y);ctx.stroke();}}
+  _paintHail(ctx,w,h,t,fixed){const count=Math.max(8,Math.round(32*this._effectScale()));for(let i=0;i<count;i++){const depth=(Math.sin(i*17.3)+1)/2;const speed=75+depth*90;const phase=(i*43)%Math.max(1,h);const y=fixed?phase:(phase+t*speed)%h;const sway=fixed?0:Math.sin(t*1.4+i)*3;const x=((i*61.7+sway+w)%w);ctx.fillStyle=`rgba(237,249,255,${.28+depth*.48})`;ctx.beginPath();ctx.ellipse(x,y,1.1+depth,1.5+depth*1.1,0,0,Math.PI*2);ctx.fill();}}
   _escape(value){return String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
 }
 
