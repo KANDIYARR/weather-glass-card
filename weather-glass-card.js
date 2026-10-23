@@ -431,19 +431,38 @@ class WeatherGlassCard extends HTMLElement {
 
   _paintRain(ctx, w, h, t, fixed) {
     const storm = this._el.card.dataset.weather.includes('lightning');
-    const count = Math.max(8, Math.round((storm ? 88 : this._el.card.dataset.weather === 'pouring' ? 66 : 42) * Math.min(1, w / 360) * this._effectScale()));
-    ctx.strokeStyle = storm ? 'rgba(213,226,255,.38)' : 'rgba(198,232,255,.46)';
-    ctx.lineWidth = 1.6;
+    const pouring = this._el.card.dataset.weather === 'pouring';
+    const count = Math.max(6, Math.round((storm ? 88 : pouring ? 66 : 42) * Math.min(1, w / 360) * this._effectScale()));
     ctx.lineCap = 'round';
-    const streakLength = storm ? 21 : 15;
-    // Keep the full streak above the card edge so clipped drops cannot look like puddles.
-    const fallRange = Math.max(1, h - streakLength - 5);
+    const travel = Math.max(1, h - 8);
+    const baseSpeed = storm ? 260 : pouring ? 220 : 175;
+    const wind = this._el.card.dataset.weather.includes('windy') ? 34 : storm ? 24 : 15;
+    const random = value => {
+      const n = Math.sin(value * 127.1 + 311.7) * 43758.5453;
+      return n - Math.floor(n);
+    };
     for (let i=0;i<count;i++) {
-      const x = ((i * 73.37 + Math.sin(i * 12.17) * 23) % w + w) % w;
-      const speed = storm ? 265 : 195;
-      // Start some streaks above the card, but never let their ends cross its bottom edge.
-      const y = fixed ? (i * 41) % fallRange : (i * 41 + t * speed) % (fallRange + 20) - 20;
-      ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x - 5, y + streakLength); ctx.stroke();
+      const seed = i + 1;
+      const depth = random(seed);
+      const speed = baseSpeed * (0.68 + depth * 0.68);
+      const streakLength = Math.min(h * 0.14, 6 + speed / 20);
+      const pathLength = Math.max(1, travel - streakLength);
+      const distance = fixed ? random(seed + 19) * pathLength : random(seed + 19) * pathLength + t * speed;
+      const cycle = Math.floor(distance / pathLength);
+      const along = distance % pathLength;
+      const y = -streakLength + along;
+      const gust = fixed ? 0 : Math.sin(t * 0.8 + seed) * 2;
+      const drift = wind * (0.45 + random(seed + 7) * 0.75);
+      const x = ((random(seed + 3) * w + drift * (along / speed + cycle * 0.35) + gust) % w + w) % w;
+      const slant = 2 + wind * (0.035 + random(seed + 11) * 0.035);
+      ctx.strokeStyle = storm
+        ? `rgba(213,226,255,${0.2 + depth * 0.25})`
+        : `rgba(198,232,255,${0.2 + depth * 0.38})`;
+      ctx.lineWidth = 0.65 + depth * 1.05;
+      ctx.beginPath();
+      ctx.moveTo(x, y);
+      ctx.lineTo(x + slant, y + streakLength);
+      ctx.stroke();
     }
     if (storm) {
       if (!fixed && t > (this._nextFlashAt || 0)) { this._flashStartedAt = t; this._nextFlashAt = t + 5 + ((Math.sin(t * 1.7) + 1) * 4); }
