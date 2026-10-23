@@ -1,88 +1,52 @@
 # Weather Glass Card
 
-An animated weather card for Home Assistant dashboards. Choose a Home Assistant weather entity or enter a city directly. Each card can show a different location, making it easy to compare places across dashboards.
+A responsive, animated Lovelace weather card for Home Assistant. The design pairs a large, lightweight temperature and drawn SVG condition icon with compact humidity and wind tiles. The background and canvas animation adapt to the current weather.
 
 **Author:** Vinoth Sakthivel · [vinoth@kandiyar.com](mailto:vinoth@kandiyar.com)
 
-## Features
+## Install
 
-- Per-card location search by city, region, or country
-- Optional use of an existing Home Assistant `weather.*` entity
-- Celsius, Fahrenheit, or Home Assistant's configured temperature unit
-- Current conditions, feels-like temperature, humidity, wind, and daily forecast
-- Configurable forecast length and animated weather artwork
-- Visual card editor and YAML configuration
-- No API key required for location-based weather
+1. Copy `weather-glass-card.js` to your Home Assistant configuration's `www` folder as `/config/www/weather-glass-card.js`.
+2. In Home Assistant, open **Settings → Dashboards → ⋮ → Resources** and select **Add resource**.
+3. Enter `/local/weather-glass-card.js` and choose **JavaScript module** as the resource type.
+4. Save, then hard-refresh the Home Assistant page. On most browsers use **Ctrl+Shift+R**; on macOS use **Cmd+Shift+R**.
+5. Add a **Weather Glass Card** to a dashboard and select a `weather.*` entity.
 
-## Install with HACS
-
-1. In Home Assistant, open **HACS** and select the menu in the upper-right corner.
-2. Choose **Custom repositories**.
-3. Add `https://github.com/KANDIYARR/weather-glass-card` and select **Dashboard** as the category.
-4. Select **Add**, open Weather Glass Card in HACS, and choose **Download**.
-5. Refresh the dashboard, add **Weather Glass Card**, and choose a source in its visual editor.
-
-HACS downloads the card and registers its dashboard resource. Manual file copying and resource configuration are not required. The GitHub repository must be public.
-
-## Choose a weather source
-
-### Search by location
-
-Choose **Search by location** in the card editor and enter a city, region, or country, such as `Manama, Bahrain`. Each card performs its own location search and loads its own weather, so different cards can display different places. Add a region or country when a city name is ambiguous.
-
-Location-based weather is provided by [Open-Meteo](https://open-meteo.com/). It requires an internet connection from the browser and does not require an API key. Open-Meteo's free API is for non-commercial use; commercial use requires a customer API. The card links to Open-Meteo for attribution.
-
-### Use a Home Assistant weather entity
-
-Choose **Home Assistant weather entity** and select an available `weather.*` entity. This uses the location and data already provided by that integration and does not make direct requests to Open-Meteo.
-
-## Configuration
-
-For location-based weather:
+## Example
 
 ```yaml
 type: custom:weather-glass-card
-source: open_meteo
-location: Manama, Bahrain
-unit: C
-show_forecast: true
-forecast_days: 4
-animated: true
-```
-
-For a Home Assistant weather entity:
-
-```yaml
-type: custom:weather-glass-card
-source: entity
 entity: weather.forecast_home
-location_label: Home
-unit: auto
-show_forecast: true
-forecast_days: 4
-animated: true
+name: Manama
+show_humidity: true
+show_wind: true
+show_forecast: false
+animation: true
+temperature_unit: auto
 ```
 
-| Option | Type | Default | Description |
-| --- | --- | --- | --- |
-| `source` | string | Based on `entity` | `open_meteo` to search by location, or `entity` to use Home Assistant |
-| `location` | string | Empty | City, region, or country to look up when `source: open_meteo` |
-| `entity` | string | Required for entity source | Home Assistant weather entity |
-| `location_label` | string | Resolved place or entity name | Optional title displayed on the card |
-| `unit` | string | `auto` | Temperature unit: `auto`, `C`, or `F` |
-| `show_forecast` | boolean | `true` | Show the forecast when available |
-| `forecast_days` | number | `4` | Number of forecast days to display (1–7) |
-| `animated` | boolean | `true` | Enable animation for the weather artwork |
+`temperature_unit: auto` uses the entity's temperature unit. Set it to `°C` or `°F` to override the display unit.
 
-Existing configurations with `entity` and `location` continue to use the weather entity; `location` remains its display label. Use `source: open_meteo` to make `location` select the actual place.
+| Option | Default | Description |
+| --- | --- | --- |
+| `entity` | Required | Home Assistant weather entity, such as `weather.forecast_home` |
+| `name` | Entity name | Optional location name shown on the card |
+| `show_humidity` | `true` | Show the humidity tile when the entity provides humidity |
+| `show_wind` | `true` | Show the wind tile when the entity provides wind speed |
+| `show_forecast` | `false` | Request and show a compact five-day forecast |
+| `animation` | `true` | Animate the weather background; animation pauses off-screen and respects reduced-motion preferences |
+| `temperature_unit` | `auto` | Use the entity's unit (`auto`) or select `°C` or `°F` |
 
-## Troubleshooting
+## Preview weather conditions
 
-- **HACS reports that `manifest.json` is missing:** add this repository as a **Dashboard** custom repository. It is a dashboard card, not a Home Assistant integration.
-- **Location search finds the wrong place:** include the region or country, for example `Springfield, Illinois, USA`.
-- **Location weather does not load:** ensure the browser has internet access to Open-Meteo and try a more specific place name.
-- **The forecast is empty with an entity source:** confirm that the selected integration provides forecast data.
+For a quick visual check, open **Developer Tools → States**, select your weather entity, and temporarily set its state to one of these conditions:
 
-## Support
+`sunny`, `partlycloudy`, `cloudy`, `rainy`, `pouring`, `lightning`, `lightning-rainy`, `snowy`, `snowy-rainy`, `clear-night`, `fog`, `windy`, `windy-variant`, `hail`, or `exceptional`.
 
-When reporting an issue, include your Home Assistant version, the selected weather source, and any relevant browser-console errors.
+The entity's existing temperature, humidity, and wind attributes remain in use. A real integration may overwrite a temporary state change on its next update. For a persistent demo, create a template weather entity with a selectable condition and sample values.
+
+## Notes
+
+- Forecasts are requested with Home Assistant's `weather.get_forecasts` action and appear only when the selected entity provides daily forecasts.
+- Rain, storm, snow, cloud, sun, night, fog, wind, and hail effects are drawn on a small canvas. The card caps canvas resolution at 2× device pixel ratio and pauses rendering while off-screen or while the browser tab is hidden.
+- If the entity is `unknown`, `unavailable`, or has no temperature, the card displays **Weather unavailable**.
