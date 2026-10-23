@@ -441,7 +441,8 @@ class WeatherGlassCard extends HTMLElement {
     for (let i=0;i<count;i++) {
       const x = ((i * 73.37 + Math.sin(i * 12.17) * 23) % w + w) % w;
       const speed = storm ? 265 : 195;
-      const y = fixed ? (i * 41) % fallRange : (i * 41 + t * speed) % (fallRange + 30) - 20;
+      // Start some streaks above the card, but never let their ends cross its bottom edge.
+      const y = fixed ? (i * 41) % fallRange : (i * 41 + t * speed) % (fallRange + 20) - 20;
       ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x - 5, y + streakLength); ctx.stroke();
     }
     if (storm) {
