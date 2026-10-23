@@ -4,13 +4,25 @@ A responsive, animated Lovelace weather card for Home Assistant. The design pair
 
 **Author:** Vinoth Sakthivel · [vinoth@kandiyar.com](mailto:vinoth@kandiyar.com)
 
-## Install
+## Install with HACS
 
-1. Copy `weather-glass-card.js` to your Home Assistant configuration's `www` folder as `/config/www/weather-glass-card.js`.
-2. In Home Assistant, open **Settings → Dashboards → ⋮ → Resources** and select **Add resource**.
-3. Enter `/local/weather-glass-card.js` and choose **JavaScript module** as the resource type.
-4. Save, then hard-refresh the Home Assistant page. On most browsers use **Ctrl+Shift+R**; on macOS use **Cmd+Shift+R**.
-5. Add a **Weather Glass Card** to a dashboard and select a `weather.*` entity.
+Add Weather Glass Card to HACS as a **Dashboard** repository. This is a Lovelace card, not a Home Assistant integration; choosing **Integration** can cause HACS to look for a `manifest.json` file.
+
+1. In Home Assistant, open **HACS** and select the three-dot menu in the upper-right corner.
+2. Choose **Custom repositories**.
+3. Enter [`https://github.com/KANDIYARR/weather-glass-card`](https://github.com/KANDIYARR/weather-glass-card), select **Dashboard** as the category, then select **Add**.
+4. Find **Weather Glass Card** in HACS and download it.
+5. Refresh Home Assistant, then add **Weather Glass Card** to a dashboard and choose a `weather.*` entity.
+
+HACS installs the card and manages its dashboard resource. There is no need to copy the JavaScript file or add a resource manually.
+
+### Manual installation
+
+If you prefer not to use HACS:
+
+1. Copy `weather-glass-card.js` to `/config/www/weather-glass-card.js`.
+2. Open **Settings → Dashboards → ⋮ → Resources**, add `/local/weather-glass-card.js` as a **JavaScript module**, and save.
+3. Hard-refresh Home Assistant. On most browsers use **Ctrl+Shift+R**; on macOS use **Cmd+Shift+R**.
 
 ## Example
 
@@ -26,6 +38,8 @@ temperature_unit: auto
 ```
 
 `temperature_unit: auto` uses the entity's temperature unit. Set it to `°C` or `°F` to override the display unit.
+
+The `name` is a per-card label, so separate cards can display different location names while reading from their respective weather entities.
 
 | Option | Default | Description |
 | --- | --- | --- |
