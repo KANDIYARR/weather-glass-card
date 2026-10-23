@@ -93,7 +93,7 @@ class WeatherGlassCard extends HTMLElement {
       <style>
         :host{display:block;color:#f7f9ff;font-family:var(--primary-font-family,Roboto,"Helvetica Neue",Arial,sans-serif);}
         *{box-sizing:border-box}
-        .card{--sky-1:#183858;--sky-2:#10233f;container-type:inline-size;position:relative;isolation:isolate;overflow:hidden;min-height:300px;padding:clamp(14px,4cqi,26px);border:1px solid rgba(255,255,255,.2);border-radius:var(--ha-card-border-radius,32px);background:linear-gradient(155deg,var(--sky-1),var(--sky-2));box-shadow:0 18px 48px rgba(6,19,39,.24);}
+        .card{--sky-1:#183858;--sky-2:#10233f;container-type:inline-size;position:relative;isolation:isolate;overflow:hidden;min-height:240px;padding:clamp(10px,3cqi,18px);border:1px solid rgba(255,255,255,.2);border-radius:var(--ha-card-border-radius,26px);background:linear-gradient(155deg,var(--sky-1),var(--sky-2));box-shadow:0 14px 34px rgba(6,19,39,.22);}
         .card[data-weather="sunny"]{--sky-1:#206b9f;--sky-2:#124777}
         .card[data-weather="partlycloudy"]{--sky-1:#4c7897;--sky-2:#203e5c}
         .card[data-weather="cloudy"]{--sky-1:#55718c;--sky-2:#263d55}
@@ -108,24 +108,24 @@ class WeatherGlassCard extends HTMLElement {
         canvas{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
         .wash{position:absolute;inset:0;z-index:0;background:linear-gradient(145deg,rgba(255,255,255,.035),transparent 46%,rgba(4,15,34,.16));pointer-events:none}
         .content,.message{position:relative;z-index:1}
-        .top{display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:30px}
-        .name{display:flex;align-items:center;gap:9px;min-width:0;font-size:clamp(16px,4.5cqi,24px);font-weight:700;letter-spacing:.01em;text-shadow:0 1px 8px rgba(0,0,0,.16)}.pin-icon{width:22px;height:22px;flex:none}.pin-icon svg,.tile-icon svg{width:100%;height:100%;display:block}
+        .top{display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:26px}
+        .name{display:flex;align-items:center;gap:7px;min-width:0;font-size:clamp(14px,3.8cqi,20px);font-weight:700;letter-spacing:.01em;text-shadow:0 1px 8px rgba(0,0,0,.16)}.pin-icon{width:19px;height:19px;flex:none}.pin-icon svg,.tile-icon svg{width:100%;height:100%;display:block}
         .name-text{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-        .day{flex:none;padding:6px 12px;border:1px solid rgba(255,255,255,.18);border-radius:999px;background:rgba(5,18,42,.28);font-size:clamp(13px,3.2cqi,17px);font-weight:650;}
-        .hero{position:relative;display:flex;align-items:center;justify-content:space-between;gap:4px;min-height:clamp(128px,34cqi,190px);padding:5px 0 0}
+        .day{flex:none;padding:5px 10px;border:1px solid rgba(255,255,255,.18);border-radius:999px;background:rgba(5,18,42,.28);font-size:clamp(12px,2.8cqi,15px);font-weight:650;}
+        .hero{position:relative;display:flex;align-items:center;justify-content:space-between;gap:2px;min-height:clamp(100px,26cqi,146px);padding:3px 0 0}
         .reading{position:relative;z-index:1;min-width:0}
         .temperature-line{display:flex;align-items:flex-start;gap:9px;white-space:nowrap}
-        .temperature{font-size:clamp(60px,17cqi,108px);font-weight:200;line-height:.93;letter-spacing:-.085em;font-variant-numeric:tabular-nums;text-shadow:0 4px 22px rgba(0,0,0,.1)}
-        .temperature-unit{padding-top:8px;font-size:clamp(18px,5cqi,34px);font-weight:300;opacity:.94}
-        .condition{margin-top:8px;font-size:clamp(16px,4.2cqi,23px);font-weight:400;letter-spacing:.015em;text-shadow:0 2px 10px rgba(0,0,0,.15)}
-        .weather-icon{flex:none;width:clamp(72px,27cqi,150px);height:clamp(72px,27cqi,150px);filter:drop-shadow(0 8px 18px rgba(0,0,0,.15));}
-        .details{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin-top:4px}
-        .tile{min-width:0;padding:clamp(9px,3cqi,16px);border:1px solid rgba(255,255,255,.18);border-radius:18px;background:rgba(5,18,42,.3);box-shadow:inset 0 1px 0 rgba(255,255,255,.08);backdrop-filter:blur(8px)}
+        .temperature{font-size:clamp(52px,14cqi,84px);font-weight:200;line-height:.93;letter-spacing:-.085em;font-variant-numeric:tabular-nums;text-shadow:0 4px 22px rgba(0,0,0,.1)}
+        .temperature-unit{padding-top:6px;font-size:clamp(16px,3.8cqi,26px);font-weight:300;opacity:.94}
+        .condition{margin-top:5px;font-size:clamp(14px,3.2cqi,19px);font-weight:400;letter-spacing:.015em;text-shadow:0 2px 10px rgba(0,0,0,.15)}
+        .weather-icon{flex:none;width:clamp(58px,22cqi,112px);height:clamp(58px,22cqi,112px);filter:drop-shadow(0 6px 12px rgba(0,0,0,.15));}
+        .details{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;margin-top:2px}
+        .tile{min-width:0;padding:clamp(7px,2.4cqi,12px);border:1px solid rgba(255,255,255,.18);border-radius:15px;background:rgba(5,18,42,.3);box-shadow:inset 0 1px 0 rgba(255,255,255,.08);backdrop-filter:blur(8px)}
         .tile-head{display:flex;align-items:center;gap:7px;font-size:clamp(12px,3.4cqi,17px);font-weight:650;color:#f7f9ff;white-space:nowrap}
-        .tile-icon{width:18px;height:18px;flex:none;color:#eaf4ff}
-        .tile-value{margin-top:8px;font-size:clamp(20px,6cqi,30px);font-weight:700;line-height:1.1;font-variant-numeric:tabular-nums;color:#fff;white-space:nowrap}
+        .tile-icon{width:16px;height:16px;flex:none;color:#eaf4ff}
+        .tile-value{margin-top:5px;font-size:clamp(18px,5cqi,25px);font-weight:700;line-height:1.1;font-variant-numeric:tabular-nums;color:#fff;white-space:nowrap}
         .tile-unit{font-size:.62em;font-weight:600;letter-spacing:0;opacity:.96;white-space:nowrap}
-        .meter{height:5px;margin-top:9px;overflow:hidden;border-radius:99px;background:rgba(222,237,255,.28)}
+        .meter{height:4px;margin-top:7px;overflow:hidden;border-radius:99px;background:rgba(222,237,255,.28)}
         .meter-fill{height:100%;width:0;border-radius:inherit;background:#ffd068;box-shadow:0 0 10px rgba(255,208,104,.25);transition:width .35s ease}
         .forecast{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:7px;margin-top:18px;padding-top:16px;border-top:1px solid rgba(255,255,255,.2)}
         .forecast[hidden],.tile[hidden],.details[hidden]{display:none!important}
@@ -136,8 +136,8 @@ class WeatherGlassCard extends HTMLElement {
         .forecast-low{font-weight:400;color:#e3edf8;margin-left:3px}
         .message{display:none;padding:24px 18px;text-align:center;font-size:15px;font-weight:600;color:#fff}
         .card[data-message="true"] .content{display:none}.card[data-message="true"] .message{display:block}
-        @container (max-width: 390px){.card{min-height:0;padding:12px;border-radius:var(--ha-card-border-radius,22px)}.top{gap:6px}.hero{min-height:clamp(110px,34cqi,132px)}.temperature{font-size:clamp(56px,17cqi,66px)}.temperature-unit{font-size:18px;padding-top:5px}.condition{font-size:16px;margin-top:5px}.weather-icon{width:clamp(68px,24cqi,92px);height:clamp(68px,24cqi,92px)}.details{gap:7px}.tile{padding:9px;border-radius:15px}.tile-head{font-size:clamp(10px,3.4cqi,13px);gap:5px}.tile-icon{width:15px;height:15px}.tile-value{font-size:clamp(18px,6cqi,23px);margin-top:6px}.meter{margin-top:7px}.forecast{gap:2px;margin-top:12px;padding-top:10px}}
-        @container (max-width: 300px){.card{padding:10px}.hero{min-height:100px}.temperature{font-size:52px}.weather-icon{width:62px;height:62px}.details{gap:5px}.tile{padding:7px}.tile-head{font-size:10px}.tile-value{font-size:17px}}
+        @container (max-width: 390px){.card{min-height:0;padding:10px;border-radius:var(--ha-card-border-radius,18px)}.top{gap:5px}.hero{min-height:clamp(90px,27cqi,108px)}.temperature{font-size:clamp(48px,14cqi,56px)}.temperature-unit{font-size:15px;padding-top:4px}.condition{font-size:14px;margin-top:4px}.weather-icon{width:clamp(54px,20cqi,76px);height:clamp(54px,20cqi,76px)}.details{gap:6px}.tile{padding:7px;border-radius:12px}.tile-head{font-size:clamp(10px,3cqi,12px);gap:4px}.tile-icon{width:13px;height:13px}.tile-value{font-size:clamp(16px,5cqi,19px);margin-top:4px}.meter{margin-top:6px}.forecast{gap:2px;margin-top:9px;padding-top:8px}}
+        @container (max-width: 300px){.card{padding:8px}.hero{min-height:82px}.temperature{font-size:44px}.weather-icon{width:48px;height:48px}.details{gap:4px}.tile{padding:6px}.tile-head{font-size:9px}.tile-value{font-size:15px}}
         @media(prefers-reduced-motion:reduce){.meter-fill{transition:none}}
       </style>
       <article class="card" data-weather="unknown" data-message="false">
