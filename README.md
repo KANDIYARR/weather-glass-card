@@ -4,6 +4,8 @@ A responsive, animated Lovelace weather card for Home Assistant. The design pair
 
 **Author:** Vinoth Sakthivel · [vinoth@kandiyar.com](mailto:vinoth@kandiyar.com)
 
+![Weather Glass Card preview](images/weather-glass-card.svg)
+
 ## Install with HACS
 
 Add Weather Glass Card to HACS as a **Dashboard** repository. This is a Lovelace card, not a Home Assistant integration; choosing **Integration** can cause HACS to look for a `manifest.json` file.
