@@ -435,11 +435,14 @@ class WeatherGlassCard extends HTMLElement {
     ctx.strokeStyle = storm ? 'rgba(213,226,255,.38)' : 'rgba(198,232,255,.46)';
     ctx.lineWidth = 1.6;
     ctx.lineCap = 'round';
+    const streakLength = storm ? 21 : 15;
+    // Keep the full streak above the card edge so clipped drops cannot look like puddles.
+    const fallRange = Math.max(1, h - streakLength - 5);
     for (let i=0;i<count;i++) {
       const x = ((i * 73.37 + Math.sin(i * 12.17) * 23) % w + w) % w;
       const speed = storm ? 265 : 195;
-      const y = fixed ? (i * 41) % h : (i * 41 + t * speed) % (h + 30) - 20;
-      ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x - 5, y + (storm ? 21 : 15)); ctx.stroke();
+      const y = fixed ? (i * 41) % fallRange : (i * 41 + t * speed) % (fallRange + 30) - 20;
+      ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x - 5, y + streakLength); ctx.stroke();
     }
     if (storm) {
       if (!fixed && t > (this._nextFlashAt || 0)) { this._flashStartedAt = t; this._nextFlashAt = t + 5 + ((Math.sin(t * 1.7) + 1) * 4); }
